@@ -1,0 +1,34 @@
+{
+    "name": "com.madcow.tracktool",
+    "version": "0.0.2",
+    "displayName": "Track Tools 2022",
+    "description": "Track tool for TDR",
+    "unity": "2022.1",
+    "unityRelease": "10f1",
+    "documentationUrl": "https://github.com/ilpav12/trackdayr-docs",
+    "changelogUrl": "https://github.com/ilpav12/trackdayr-docs",
+    "licensesUrl": "https://github.com/ilpav12/trackdayr-docs",
+    "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.20.2",
+        "com.unity.render-pipelines.high-definition": "13.1.8",
+        "com.unity.terrain-tools": "4.0.3"
+   },
+   "keywords": [
+      "Tools",
+      "Track",
+      "TDR"
+    ],
+    "author": {
+      "name": "MadCow",
+      "email": "info@bikesimexperience.com",
+      "url": "https://www.trackdayr.com"
+    },
+    "samples": [
+      {
+          "displayName": "Track Example",
+          "description": "Contains sample track to use for base track creation",
+          "path": "Samples~/TrackExample"
+      }
+  ]
+    
+}

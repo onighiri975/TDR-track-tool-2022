@@ -1,0 +1,17 @@
+{
+    "name": "madcow.tracktool.runtime",
+    "rootNamespace": "",
+    "references": [
+        "Unity.ScriptableBuildPipeline",
+        "Unity.ScriptableBuildPipeline.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
