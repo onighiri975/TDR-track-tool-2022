@@ -416,6 +416,14 @@ public class TDR_TrackExport : MonoBehaviour
         bytes = TrackBack.EncodeToPNG();
         File.WriteAllBytes(fileContainer + FileName + "-back.png", bytes);
 
+        var dashMan = GameObject.Find("#dashboard_man");
+        if (dashMan != null)
+        {
+            trackData.extraInfo.dashPosition = new float[] { dashMan.transform.position.x, dashMan.transform.position.y, dashMan.transform.position.z };
+            trackData.extraInfo.dashRotation = new float[] { dashMan.transform.eulerAngles.x, dashMan.transform.eulerAngles.y, dashMan.transform.eulerAngles.z };
+        }
+
+
         trackData.extraInfo.mapPosition = new float[] { TrackMap.transform.position.x, 0f, TrackMap.transform.position.z };
         trackData.extraInfo.mapRotation = new float[] { 0f, -180f, 0f };
         trackData.extraInfo.mapScale = TrackMap.transform.localScale.x * 0.1f;
