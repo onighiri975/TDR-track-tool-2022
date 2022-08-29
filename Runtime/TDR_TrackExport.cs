@@ -1,3 +1,18 @@
+/****************************** Module Header ******************************\
+Module Name:  <TDR_TrackExport>
+Project:      TRACK BUILDER
+Copyright (c) Mad Cow.
+Version         0.0.4
+
+This source is subject to the Microsoft Public License.
+See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL.
+All other rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+\***************************************************************************/
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,6 +78,8 @@ public class TDR_TrackExport : MonoBehaviour
     [Serializable]
     public class SoilData
     {
+        public string label = "";
+        public int undergroundID = -1;
         public float ColorErosion = 0.33f;
         public float DepthErosion = 0.01f;
         public float DepthPenetrating = 0f;
@@ -70,6 +87,7 @@ public class TDR_TrackExport : MonoBehaviour
         public float LatGrip = 1f;
     }
 
+    public bool[] soilDrop = new bool[8] { false, false, false, false, false, false, false, false };
 
     public bool CheckFormat ( Texture2D source)
     {
@@ -122,6 +140,14 @@ public class TDR_TrackExport : MonoBehaviour
                     return;
                 }
             }
+            else
+            {
+                var scenes = AssetDatabase.LoadAssetAtPath(SceneManager.GetActiveScene().path, typeof(UnityEngine.Object));
+                if (scenes.name != myTarget.TrackScene.name)
+                {
+                    myTarget.TrackScene = scenes;
+                }
+            }
 
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("TDR TRACK BUILDER", EditorStyles.boldLabel);
@@ -147,23 +173,67 @@ public class TDR_TrackExport : MonoBehaviour
             myTarget.trackData.extraInfo.mapScale = EditorGUILayout.FloatField("MapWidth ", myTarget.trackData.extraInfo.mapScale);
             myTarget.mapOffset = EditorGUILayout.Vector2Field("Offset ", myTarget.mapOffset);
 
+
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("TERRAIN EROSION DATA", EditorStyles.boldLabel);
             EditorGUILayout.Space(2);
-
+            bool invalidUnderground = false;
             if (myTarget.trackData.extraInfo.soilDatas != null && myTarget.trackData.extraInfo.soilDatas.Length >= 8 ) {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     if(myTarget.trackData.extraInfo.soilDatas[i] == null)
                     {
                         myTarget.trackData.extraInfo.soilDatas[i] = new SoilData();
                     }
-                    EditorGUILayout.LabelField("LAYER (" + (i) + ")", EditorStyles.whiteLabel);
-                    myTarget.trackData.extraInfo.soilDatas[i].ColorErosion = EditorGUILayout.FloatField("Color erosion ", myTarget.trackData.extraInfo.soilDatas[i].ColorErosion);
-                    myTarget.trackData.extraInfo.soilDatas[i].DepthErosion = EditorGUILayout.FloatField("Height erosion ", myTarget.trackData.extraInfo.soilDatas[i].DepthErosion);
-                    myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating = EditorGUILayout.FloatField("Soil penetrating factor ", myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating);
-                    myTarget.trackData.extraInfo.soilDatas[i].LongGrip = EditorGUILayout.FloatField("Longitudinal grip", myTarget.trackData.extraInfo.soilDatas[i].LongGrip);
-                    myTarget.trackData.extraInfo.soilDatas[i].LatGrip = EditorGUILayout.FloatField("Lateral grip ", myTarget.trackData.extraInfo.soilDatas[i].LatGrip);
+                    var labelUP = myTarget.trackData.extraInfo.soilDatas[i].label.ToUpper();
+                    if (string.IsNullOrEmpty(labelUP))
+                    {
+                        labelUP = "(" + (i) + ") UNNAMED";
+                    }
+                    else
+                    {
+                        labelUP = "(" + (i) + ") "+ labelUP;
+                    }
+                    var underInfo = "";
+                    var uID = myTarget.trackData.extraInfo.soilDatas[i].undergroundID;
+                    if(uID != -1 && uID < myTarget.trackData.extraInfo.soilDatas.Length)
+                    {
+                        var underG = myTarget.trackData.extraInfo.soilDatas[uID].label.ToUpper();
+                        if (string.IsNullOrEmpty(underG))
+                        {
+                            underG = "UNNAMED";
+                        }
+                    
+                        underInfo += " is above "+ "(" + uID + ") "+underG;
+                    }
+                    else if (uID == -1)
+                    {
+                        underInfo += "has no Underground";
+                    }
+                    else
+                    {
+                        underInfo += "Warning: INVALID Underground";
+                        invalidUnderground = true;
+                    }
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField(labelUP + " " + (!myTarget.soilDrop[i] ? underInfo : ""), EditorStyles.whiteLabel);
+
+                    if (GUILayout.Button(myTarget.soilDrop[i] ? "-" : "+")){
+                        myTarget.soilDrop[i] = !myTarget.soilDrop[i];
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    if (myTarget.soilDrop[i])
+                    {
+                        EditorGUILayout.BeginVertical();
+                        myTarget.trackData.extraInfo.soilDatas[i].label = EditorGUILayout.TextField("  Name ", myTarget.trackData.extraInfo.soilDatas[i].label);
+                        myTarget.trackData.extraInfo.soilDatas[i].undergroundID = EditorGUILayout.IntField("  Under ID ", myTarget.trackData.extraInfo.soilDatas[i].undergroundID);
+                        myTarget.trackData.extraInfo.soilDatas[i].ColorErosion = EditorGUILayout.FloatField("   Color erosion ", myTarget.trackData.extraInfo.soilDatas[i].ColorErosion);
+                        myTarget.trackData.extraInfo.soilDatas[i].DepthErosion = EditorGUILayout.FloatField("   Height erosion ", myTarget.trackData.extraInfo.soilDatas[i].DepthErosion);
+                        myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating = EditorGUILayout.FloatField("   Soil penetrating factor ", myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating);
+                        myTarget.trackData.extraInfo.soilDatas[i].LongGrip = EditorGUILayout.FloatField("   Longitudinal grip", myTarget.trackData.extraInfo.soilDatas[i].LongGrip);
+                        myTarget.trackData.extraInfo.soilDatas[i].LatGrip = EditorGUILayout.FloatField("    Lateral grip ", myTarget.trackData.extraInfo.soilDatas[i].LatGrip);
+                        EditorGUILayout.EndVertical();
+                    }
                     EditorGUILayout.Space(2);
                 }
             }
@@ -179,12 +249,17 @@ public class TDR_TrackExport : MonoBehaviour
             }
             EditorGUILayout.EndHorizontal();
 
-
-
             //CHECK FOR ALLOW SAVE
             EditorGUILayout.Space(10);
             bool disableCheck = false;
-            if( myTarget.TrackScene == null)
+
+            if(invalidUnderground)
+            {
+                EditorGUILayout.LabelField("WARNING: Found some invalid Underground", EditorStyles.boldLabel);
+                disableCheck = true;
+            }
+
+            if ( myTarget.TrackScene == null)
             {
                 EditorGUILayout.LabelField("WARNING: Missing scene object", EditorStyles.boldLabel);
                 disableCheck = true;

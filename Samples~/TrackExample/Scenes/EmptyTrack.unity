@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1287.9258, g: 1104.6318, b: 1053.5757, a: 1}
+  m_IndirectSpecularColor: {r: 1198.4591, g: 1016.0786, b: 967.0244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -1145,44 +1145,60 @@ MonoBehaviour:
       extraSteer: 0
       pysicallySky: 0
       soilDatas:
-      - ColorErosion: 0.5
-        DepthErosion: 0.05
-        DepthPenetrating: 0.2
-        LongGrip: 0.5
-        LatGrip: 1.3
-      - ColorErosion: 0.33
-        DepthErosion: 0.03
+      - label: Mud
+        undergroundID: 3
+        ColorErosion: 0.3
+        DepthErosion: 0.04
+        DepthPenetrating: 0.12
+        LongGrip: 0.8
+        LatGrip: 1.5
+      - label: Tiremark
+        undergroundID: 3
+        ColorErosion: 0.33
+        DepthErosion: 0.02
         DepthPenetrating: 0.001
         LongGrip: 1.05
         LatGrip: 1.09
-      - ColorErosion: 0.2
+      - label: Rough
+        undergroundID: 3
+        ColorErosion: 0.2
         DepthErosion: 0.01
         DepthPenetrating: 0.002
         LongGrip: 1.02
         LatGrip: 1.12
-      - ColorErosion: 0.33
+      - label: Light Under
+        undergroundID: -1
+        ColorErosion: 0
         DepthErosion: 0
         DepthPenetrating: 0.0001
         LongGrip: 1.01
-        LatGrip: 1.3
-      - ColorErosion: 0.33
+        LatGrip: 1.9
+      - label: Rock
+        undergroundID: 2
+        ColorErosion: 0.33
         DepthErosion: 0.01
-        DepthPenetrating: 0
+        DepthPenetrating: 0.002
         LongGrip: 1
         LatGrip: 1
-      - ColorErosion: 0.33
+      - label: Forest Grass
+        undergroundID: 6
+        ColorErosion: 0.33
         DepthErosion: 0.01
-        DepthPenetrating: 0
+        DepthPenetrating: 0.05
         LongGrip: 1
         LatGrip: 1
-      - ColorErosion: 0.33
+      - label: Forest Mud
+        undergroundID: 2
+        ColorErosion: 0.33
         DepthErosion: 0.01
-        DepthPenetrating: 0
+        DepthPenetrating: 0.05
         LongGrip: 1
         LatGrip: 1
-      - ColorErosion: 0.33
+      - label: Mud Cracked
+        undergroundID: 0
+        ColorErosion: 0.33
         DepthErosion: 0.01
-        DepthPenetrating: 0
+        DepthPenetrating: 0.002
         LongGrip: 1
         LatGrip: 1
   TrackMap: {fileID: 678172499}
@@ -1192,6 +1208,7 @@ MonoBehaviour:
   TrackSplash: {fileID: 2800000, guid: c5ceec6914529f94d8f2a83b2174c4ed, type: 3}
   TrackBack: {fileID: 2800000, guid: 244b29efe85166b44ac3126368fe8f0f, type: 3}
   TrackMapImage: {fileID: 2800000, guid: f7caa9a0b276f55499f95d10b4e46129, type: 3}
+  soilDrop: 0000000000000000
 --- !u!1 &849139489
 GameObject:
   m_ObjectHideFlags: 0
