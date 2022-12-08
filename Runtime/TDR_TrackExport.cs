@@ -83,8 +83,10 @@ public class TDR_TrackExport : MonoBehaviour
         public float ColorErosion = 0.33f;
         public float DepthErosion = 0.01f;
         public float DepthPenetrating = 0f;
-        public float LongGrip = 1f;
-        public float LatGrip = 1f;
+        public float LongGrip = 0.94f;
+        public float LatGrip = 1.1f;
+        public float MudFx = 0.0f;
+        public float DirtFx = 0.05f;
     }
 
     public bool[] soilDrop = new bool[8] { false, false, false, false, false, false, false, false };
