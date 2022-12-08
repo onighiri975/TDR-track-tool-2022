@@ -2,7 +2,7 @@
 Module Name:  <TDR_TrackExport>
 Project:      TRACK BUILDER
 Copyright (c) Mad Cow.
-Version         0.0.4
+Version         0.0.5
 
 This source is subject to the Microsoft Public License.
 See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL.
@@ -91,7 +91,7 @@ public class TDR_TrackExport : MonoBehaviour
 
     public bool[] soilDrop = new bool[8] { false, false, false, false, false, false, false, false };
 
-    public bool CheckFormat ( Texture2D source)
+    public bool CheckFormat(Texture2D source)
     {
         return source.format == TextureFormat.RGBA32 || source.format == TextureFormat.RGB24;
     }
@@ -121,7 +121,7 @@ public class TDR_TrackExport : MonoBehaviour
             TDR_TrackExport myTarget = (TDR_TrackExport)target;
             EditorGUI.BeginChangeCheck();
             //Header
-            if(myTarget.trackData == null)
+            if (myTarget.trackData == null)
             {
                 myTarget.trackData = new Tracks();
             }
@@ -156,7 +156,7 @@ public class TDR_TrackExport : MonoBehaviour
             EditorGUILayout.Space(5);
             EditorGUILayout.LabelField("Scene Asset " + myTarget.TrackScene.name, EditorStyles.boldLabel);//, typeof(UnityEngine.Object), false);
             EditorGUILayout.Space(5);
-            
+
             GUILayout.BeginHorizontal();
             myTarget.TrackIcon = TextureField("Menu Icon ", myTarget.TrackIcon);
             myTarget.TrackSplash = TextureField("Menu Splash ", myTarget.TrackSplash);
@@ -180,10 +180,11 @@ public class TDR_TrackExport : MonoBehaviour
             EditorGUILayout.LabelField("TERRAIN EROSION DATA", EditorStyles.boldLabel);
             EditorGUILayout.Space(2);
             bool invalidUnderground = false;
-            if (myTarget.trackData.extraInfo.soilDatas != null && myTarget.trackData.extraInfo.soilDatas.Length >= 8 ) {
+            if (myTarget.trackData.extraInfo.soilDatas != null && myTarget.trackData.extraInfo.soilDatas.Length >= 8)
+            {
                 for (int i = 0; i < 8; i++)
                 {
-                    if(myTarget.trackData.extraInfo.soilDatas[i] == null)
+                    if (myTarget.trackData.extraInfo.soilDatas[i] == null)
                     {
                         myTarget.trackData.extraInfo.soilDatas[i] = new SoilData();
                     }
@@ -194,19 +195,19 @@ public class TDR_TrackExport : MonoBehaviour
                     }
                     else
                     {
-                        labelUP = "(" + (i) + ") "+ labelUP;
+                        labelUP = "(" + (i) + ") " + labelUP;
                     }
                     var underInfo = "";
                     var uID = myTarget.trackData.extraInfo.soilDatas[i].undergroundID;
-                    if(uID != -1 && uID < myTarget.trackData.extraInfo.soilDatas.Length)
+                    if (uID != -1 && uID < myTarget.trackData.extraInfo.soilDatas.Length)
                     {
                         var underG = myTarget.trackData.extraInfo.soilDatas[uID].label.ToUpper();
                         if (string.IsNullOrEmpty(underG))
                         {
                             underG = "UNNAMED";
                         }
-                    
-                        underInfo += " is above "+ "(" + uID + ") "+underG;
+
+                        underInfo += " is above " + "(" + uID + ") " + underG;
                     }
                     else if (uID == -1)
                     {
@@ -220,7 +221,8 @@ public class TDR_TrackExport : MonoBehaviour
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField(labelUP + " " + (!myTarget.soilDrop[i] ? underInfo : ""), EditorStyles.whiteLabel);
 
-                    if (GUILayout.Button(myTarget.soilDrop[i] ? "-" : "+")){
+                    if (GUILayout.Button(myTarget.soilDrop[i] ? "-" : "+"))
+                    {
                         myTarget.soilDrop[i] = !myTarget.soilDrop[i];
                     }
                     EditorGUILayout.EndHorizontal();
@@ -234,6 +236,8 @@ public class TDR_TrackExport : MonoBehaviour
                         myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating = EditorGUILayout.FloatField("   Soil penetrating factor ", myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating);
                         myTarget.trackData.extraInfo.soilDatas[i].LongGrip = EditorGUILayout.FloatField("   Longitudinal grip", myTarget.trackData.extraInfo.soilDatas[i].LongGrip);
                         myTarget.trackData.extraInfo.soilDatas[i].LatGrip = EditorGUILayout.FloatField("    Lateral grip ", myTarget.trackData.extraInfo.soilDatas[i].LatGrip);
+                        myTarget.trackData.extraInfo.soilDatas[i].MudFx = EditorGUILayout.FloatField("   Mud FX", myTarget.trackData.extraInfo.soilDatas[i].MudFx);
+                        myTarget.trackData.extraInfo.soilDatas[i].DirtFx = EditorGUILayout.FloatField("    Dirt FX ", myTarget.trackData.extraInfo.soilDatas[i].DirtFx);
                         EditorGUILayout.EndVertical();
                     }
                     EditorGUILayout.Space(2);
@@ -255,13 +259,13 @@ public class TDR_TrackExport : MonoBehaviour
             EditorGUILayout.Space(10);
             bool disableCheck = false;
 
-            if(invalidUnderground)
+            if (invalidUnderground)
             {
                 EditorGUILayout.LabelField("WARNING: Found some invalid Underground", EditorStyles.boldLabel);
                 disableCheck = true;
             }
 
-            if ( myTarget.TrackScene == null)
+            if (myTarget.TrackScene == null)
             {
                 EditorGUILayout.LabelField("WARNING: Missing scene object", EditorStyles.boldLabel);
                 disableCheck = true;
@@ -281,7 +285,7 @@ public class TDR_TrackExport : MonoBehaviour
                 EditorGUILayout.LabelField("WARNING: Missing path", EditorStyles.boldLabel);
                 disableCheck = true;
             }
-            
+
 
             if (myTarget.TrackIcon == null)
             {
@@ -329,7 +333,7 @@ public class TDR_TrackExport : MonoBehaviour
                 }
             }
 
-            if (myTarget.TrackBack == null )
+            if (myTarget.TrackBack == null)
             {
                 EditorGUILayout.LabelField("WARNING: Missing menu back", EditorStyles.boldLabel);
                 disableCheck = true;
@@ -408,7 +412,7 @@ public class TDR_TrackExport : MonoBehaviour
                     myTarget.mapMaterial.SetTexture("_BaseColorMap", myTarget.TrackMapImage);
                 }
             }
-            
+
 
             //Commands
             EditorGUI.BeginDisabledGroup(disableCheck);
@@ -429,7 +433,7 @@ public class TDR_TrackExport : MonoBehaviour
             if (changed && myTarget != null)
             {
                 EditorUtility.SetDirty(myTarget);
-                
+
             }
 
 
@@ -441,7 +445,7 @@ public class TDR_TrackExport : MonoBehaviour
     {
         get
         {
-            return m_trackName.Replace(" ","");
+            return m_trackName.Replace(" ", "");
         }
     }
 
