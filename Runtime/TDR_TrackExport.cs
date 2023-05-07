@@ -83,6 +83,7 @@ public class TDR_TrackExport : MonoBehaviour
         public float ColorErosion = 0.33f;
         public float DepthErosion = 0.01f;
         public float DepthPenetrating = 0f;
+        public float Resistance = 0.001f;
         public float LongGrip = 0.94f;
         public float LatGrip = 1.1f;
         public float MudFx = 0.0f;
@@ -234,6 +235,7 @@ public class TDR_TrackExport : MonoBehaviour
                         myTarget.trackData.extraInfo.soilDatas[i].ColorErosion = EditorGUILayout.FloatField("   Color erosion ", myTarget.trackData.extraInfo.soilDatas[i].ColorErosion);
                         myTarget.trackData.extraInfo.soilDatas[i].DepthErosion = EditorGUILayout.FloatField("   Height erosion ", myTarget.trackData.extraInfo.soilDatas[i].DepthErosion);
                         myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating = EditorGUILayout.FloatField("   Soil penetrating factor ", myTarget.trackData.extraInfo.soilDatas[i].DepthPenetrating);
+                        myTarget.trackData.extraInfo.soilDatas[i].Resistance = EditorGUILayout.FloatField("   Roll resistance PHX Terrain ", myTarget.trackData.extraInfo.soilDatas[i].Resistance);
                         myTarget.trackData.extraInfo.soilDatas[i].LongGrip = EditorGUILayout.FloatField("   Longitudinal grip", myTarget.trackData.extraInfo.soilDatas[i].LongGrip);
                         myTarget.trackData.extraInfo.soilDatas[i].LatGrip = EditorGUILayout.FloatField("    Lateral grip ", myTarget.trackData.extraInfo.soilDatas[i].LatGrip);
                         myTarget.trackData.extraInfo.soilDatas[i].MudFx = EditorGUILayout.FloatField("   Mud FX", myTarget.trackData.extraInfo.soilDatas[i].MudFx);
