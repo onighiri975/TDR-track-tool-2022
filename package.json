@@ -1,10 +1,10 @@
 {
     "name": "com.madcow.tracktool",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "displayName": "Track Tools 2022",
     "description": "Track tool for TDR",
     "unity": "2022.1",
-    "unityRelease": "10f1",
+    "unityRelease": "24f1",
     "documentationUrl": "https://github.com/ilpav12/trackdayr-docs",
     "changelogUrl": "https://github.com/ilpav12/trackdayr-docs",
     "licensesUrl": "https://github.com/ilpav12/trackdayr-docs",
