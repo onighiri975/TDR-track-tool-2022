@@ -31,6 +31,7 @@ public class TDR_TrackExport : MonoBehaviour
 
     [SerializeField] private string m_trackPath;
     [SerializeField] private string m_trackName;
+    [SerializeField] private string m_trackTag;
     [SerializeField] private Tracks trackData;
     [SerializeField] private GameObject TrackMap;
     [SerializeField] private Material mapMaterial;
@@ -40,7 +41,7 @@ public class TDR_TrackExport : MonoBehaviour
     [SerializeField] private Texture2D TrackSplash;
     [SerializeField] private Texture2D TrackBack;
     [SerializeField] private Texture2D TrackMapImage;
-
+    private int tagID = 0;
 
     [Serializable]
     public class Tracks
@@ -91,6 +92,12 @@ public class TDR_TrackExport : MonoBehaviour
     }
 
     public bool[] soilDrop = new bool[8] { false, false, false, false, false, false, false, false };
+
+    internal static string[] trackTag = {
+        "MX",
+        "SX",
+        "ROAD"
+    };
 
     public bool CheckFormat(Texture2D source)
     {
@@ -171,6 +178,26 @@ public class TDR_TrackExport : MonoBehaviour
 
             EditorGUILayout.Space(5);
             myTarget.m_trackName = EditorGUILayout.TextField("track name ", myTarget.m_trackName);
+
+            GUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField($"Track category {myTarget.m_trackTag}");
+            if (EditorGUILayout.DropdownButton( new GUIContent(trackTag[myTarget.tagID]), FocusType.Passive, GUILayout.Width(200)))
+            {
+                GenericMenu menu = new GenericMenu();
+                for (int i = 0; i < trackTag.Length; i++)
+                {
+                    menu.AddItem(new GUIContent(trackTag[i]), false,
+                        id => { Debug.Log("ID = " + (int)id); myTarget.tagID = (int)id; }, i);
+                }
+
+                menu.AddSeparator("");
+                menu.ShowAsContext();
+            }
+            myTarget.m_trackTag = trackTag[myTarget.tagID];
+            GUILayout.EndHorizontal();
+
+
+
             myTarget.trackData.extraInfo.lat = EditorGUILayout.FloatField("Latitude ", myTarget.trackData.extraInfo.lat);
             myTarget.trackData.extraInfo.lon = EditorGUILayout.FloatField("Longitude ", myTarget.trackData.extraInfo.lon);
             myTarget.trackData.extraInfo.mapScale = EditorGUILayout.FloatField("MapWidth ", myTarget.trackData.extraInfo.mapScale);
@@ -424,7 +451,11 @@ public class TDR_TrackExport : MonoBehaviour
 
             if (GUILayout.Button("Save " + myTarget.m_trackName))
             {
-                myTarget.SaveBike();
+                myTarget.SaveBike(false);
+            }
+            if (GUILayout.Button("Force Save " + myTarget.m_trackName))
+            {
+                myTarget.SaveBike(true);
             }
 
             GUILayout.FlexibleSpace();
@@ -467,7 +498,7 @@ public class TDR_TrackExport : MonoBehaviour
         }
     }
 
-    void SaveBike()
+    void SaveBike(bool force)
     {
 #if UNITY_EDITOR
 
@@ -524,7 +555,8 @@ public class TDR_TrackExport : MonoBehaviour
             Debug.Log("#ASSIGH TAG " + assetPath + " " + FileName);
             AssetImporter.GetAtPath(assetPath).SetAssetBundleNameAndVariant(FileName, "");
         }
-        var manifest = CompatibilityBuildPipeline.BuildAssetBundles(fileContainer, BuildAssetBundleOptions.UncompressedAssetBundle, BuildTarget.StandaloneWindows64);
+        var assetParams = force ? BuildAssetBundleOptions.UncompressedAssetBundle | BuildAssetBundleOptions.ForceRebuildAssetBundle : BuildAssetBundleOptions.UncompressedAssetBundle;
+        var manifest = CompatibilityBuildPipeline.BuildAssetBundles(fileContainer, assetParams, BuildTarget.StandaloneWindows64);
         foreach (var item in prefabList)
         {
             string assetPath = AssetDatabase.GetAssetPath(item);

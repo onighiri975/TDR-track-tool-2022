@@ -1,17 +1,17 @@
 {
     "name": "com.madcow.tracktool",
-    "version": "0.0.6",
-    "displayName": "Track Tools 2022",
+    "version": "0.0.7",
+    "displayName": "Track Tools 2023",
     "description": "Track tool for TDR",
-    "unity": "2022.1",
-    "unityRelease": "24f1",
+    "unity": "2022.2",
+    "unityRelease": "20f1",
     "documentationUrl": "https://github.com/ilpav12/trackdayr-docs",
     "changelogUrl": "https://github.com/ilpav12/trackdayr-docs",
     "licensesUrl": "https://github.com/ilpav12/trackdayr-docs",
     "dependencies": {
-        "com.unity.scriptablebuildpipeline": "1.20.2",
-        "com.unity.render-pipelines.high-definition": "13.1.8",
-        "com.unity.terrain-tools": "4.0.3"
+        "com.unity.scriptablebuildpipeline": "1.21.5",
+        "com.unity.render-pipelines.high-definition": "14.0.7",
+        "com.unity.terrain-tools": "5.0.3"
    },
    "keywords": [
       "Tools",
